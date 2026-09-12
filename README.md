@@ -1,5 +1,3 @@
-**🚀 Live App:** https://business-intelligence-system.streamlit.app/
-
 # Multi-Industry Business Intelligence and Opportunity Analysis System
 
 ### Live Application
