@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Large Yelp raw dataset
+data/raw/
+
+# Uncompressed deployment database
+data/business_insights.db
+
+# Spark / Hadoop generated data
+data/processed/
+*.parquet
+*.csv
+
+# Local / temporary files
+*.log
+*.tmp
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/secrets.toml
