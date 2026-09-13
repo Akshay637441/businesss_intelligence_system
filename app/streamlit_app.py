@@ -2,6 +2,7 @@ import streamlit as st
 import sqlite3
 import os
 import html
+import base64
 
 
 # ============================================================
@@ -57,6 +58,22 @@ def ensure_database():
 
 ensure_database()
 
+# ============================================================
+# HOMEPAGE HERO IMAGE
+# ============================================================
+
+HERO_IMAGE_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "hero_skyline.png"
+)
+
+HERO_IMAGE_DATA = ""
+
+if os.path.exists(HERO_IMAGE_PATH):
+    with open(HERO_IMAGE_PATH, "rb") as hero_file:
+        HERO_IMAGE_DATA = base64.b64encode(
+            hero_file.read()
+        ).decode("utf-8")
 
 @st.cache_resource
 def get_connection():
@@ -224,22 +241,28 @@ st.markdown(
         width: 100% !important;
         min-height: 46px !important;
 
-        background-color: #14171c !important;
-        color: #eeeeee !important;
+        background: #e52b50 !important;
+        color: #ffffff !important;
 
-        border: 1px solid rgba(255,255,255,0.10) !important;
+        border: 1px solid #e52b50 !important;
         border-radius: 9px !important;
 
         font-size: 14px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
+
+        box-shadow: none !important;
     }
 
     .stButton > button:hover {
-        background-color: #1c2027 !important;
+        background: #ff3d64 !important;
         color: #ffffff !important;
-        border-color: #e52b50 !important;
-    }
 
+        border-color: #ff3d64 !important;
+
+        box-shadow:
+            0 0 18px
+            rgba(229,43,80,0.20) !important;
+    }
 
     /* ========================================================
        ALERT
@@ -639,62 +662,274 @@ if st.session_state.page == "home":
     # HERO
     # --------------------------------------------------------
 
-    show_html(
-        """
-        <div style="
-            padding:70px 0 55px 0;
-        ">
+    if HERO_IMAGE_DATA:
 
+        show_html(
+            f"""
             <div style="
-                color:#e52b50;
-                font-size:9px;
-                font-weight:700;
-                letter-spacing:2px;
+                position:relative;
+                overflow:hidden;
+
+                min-height:365px;
+
+                margin-top:18px;
+
+                border-radius:18px;
+
+                background:#05080c;
             ">
 
-                INTELLIGENT BUSINESS DISCOVERY
+                <!-- HERO IMAGE -->
+                <img
+                    src="data:image/png;base64,{HERO_IMAGE_DATA}"
+                    style="
+                        position:absolute;
+                        top:0;
+                        right:0;
+
+                        width:100%;
+                        height:100%;
+
+                        object-fit:cover;
+                        object-position:center;
+
+                        z-index:0;
+
+                        opacity:0.85;
+                    "
+                >
+
+
+                <!-- DARK OVERLAY -->
+                <div style="
+                    position:absolute;
+                    inset:0;
+
+                    background:
+                        linear-gradient(
+                            90deg,
+                            rgba(5,8,12,0.98) 0%,
+                            rgba(5,8,12,0.92) 28%,
+                            rgba(5,8,12,0.60) 58%,
+                            rgba(5,8,12,0.25) 100%
+                        );
+
+                    z-index:1;
+                "></div>
+
+
+                <!-- HERO CONTENT -->
+                <div style="
+                    position:relative;
+
+                    z-index:2;
+
+                    padding:
+                        58px
+                        42px
+                        48px
+                        0;
+
+                    max-width:900px;
+                ">
+
+                    <div style="
+                        color:#e52b50;
+
+                        font-size:12px;
+
+                        font-weight:800;
+
+                        letter-spacing:2.5px;
+
+                        margin-left:0;
+                    ">
+
+                        INTELLIGENT BUSINESS DISCOVERY
+
+                    </div>
+
+
+                    <div style="
+                        color:#f4f4f4;
+
+                        font-size:64px;
+
+                        font-weight:800;
+
+                        line-height:0.98;
+
+                        letter-spacing:-4px;
+
+                        margin-top:14px;
+                    ">
+
+                        Discover<br>
+
+                        Business
+
+                        <span style="
+                            color:#e52b50;
+                        ">
+
+                            Potential.
+
+                        </span>
+
+                    </div>
+
+
+                    <div style="
+                        max-width:760px;
+
+                        color:#c0cad7;
+
+                        font-size:15px;
+
+                        line-height:1.65;
+
+                        margin-top:23px;
+                    ">
+
+                        Explore real business intelligence using Yelp Big Data.
+                        Analyze customer sentiment, ratings, review activity,
+                        business health and risk to make informed decisions.
+
+                    </div>
+
+                </div>
+
+
+                <!-- TAGLINE -->
+                <div style="
+                    position:absolute;
+
+                    right:48px;
+
+                    top:58px;
+
+                    z-index:3;
+
+                    color:#ffffff;
+
+                    font-family:cursive;
+
+                    font-size:18px;
+
+                    line-height:1.15;
+
+                    transform:rotate(-5deg);
+
+                    text-align:left;
+                ">
+
+                    Better Businesses<br>
+
+                    Stronger Communities
+
+
+                    <div style="
+                        width:120px;
+
+                        height:2px;
+
+                        background:#e52b50;
+
+                        margin:
+                            8px 0 0 35px;
+
+                        transform:rotate(-3deg);
+                    "></div>
+
+                </div>
 
             </div>
+            """
+        )
 
+    else:
 
+        # Fallback if hero_skyline.png is missing
+
+        show_html(
+            """
             <div style="
-                color:#f4f4f4;
-                font-size:64px;
-                font-weight:800;
-                line-height:0.98;
-                letter-spacing:-4px;
-                margin-top:16px;
+                min-height:365px;
+
+                margin-top:18px;
+
+                border-radius:18px;
+
+                background:#05080c;
+
+                padding:58px 42px 48px 0;
             ">
 
-                Discover<br>
+                <div style="
+                    color:#e52b50;
 
-                Business
+                    font-size:12px;
 
-                <span style="color:#e52b50;">
-                    Potential.
-                </span>
+                    font-weight:800;
+
+                    letter-spacing:2.5px;
+                ">
+
+                    INTELLIGENT BUSINESS DISCOVERY
+
+                </div>
+
+
+                <div style="
+                    color:#f4f4f4;
+
+                    font-size:64px;
+
+                    font-weight:800;
+
+                    line-height:0.98;
+
+                    letter-spacing:-4px;
+
+                    margin-top:14px;
+                ">
+
+                    Discover<br>
+
+                    Business
+
+                    <span style="
+                        color:#e52b50;
+                    ">
+
+                        Potential.
+
+                    </span>
+
+                </div>
+
+
+                <div style="
+                    max-width:760px;
+
+                    color:#c0cad7;
+
+                    font-size:15px;
+
+                    line-height:1.65;
+
+                    margin-top:23px;
+                ">
+
+                    Explore real business intelligence using Yelp Big Data.
+                    Analyze customer sentiment, ratings, review activity,
+                    business health and risk to make informed decisions.
+
+                </div>
 
             </div>
-
-
-            <div style="
-                max-width:650px;
-                color:#858585;
-                font-size:13px;
-                line-height:1.8;
-                margin-top:25px;
-            ">
-
-                Explore real business intelligence using Yelp Big Data.
-                Analyze customer sentiment, ratings, review activity,
-                business health and risk to make informed decisions.
-
-            </div>
-
-        </div>
-        """
-    )
-
+            """
+        )
 
     # --------------------------------------------------------
     # DATASET STATISTICS
